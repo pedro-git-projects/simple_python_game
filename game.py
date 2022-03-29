@@ -9,6 +9,21 @@ ready to do battle....
 """ 
 unknown_input ="I'm, not sure what you mean... type help for help." 
 quit_message = "Overcome with terror, you flee the dungeon and are forever branded a coward."
+help_text = """Enter a command: 
+    - n/s/e/w - move in a direction
+    - map - show a map of the labyrinth
+    - look - look around and describe your environment
+    - equip <item> - use an item from your inventory
+    - unequip <item> - stop using an item from your inventory
+    - fight - attack a foe
+    - examine <object> - examine an object more closely
+    - get <item> - pick up an item
+    - drop <item> - drop an item
+    - rest - restore some health by resting
+    - inventory - show your inventory
+    - status - show current player status
+    - quit - end the game"
+"""
 
 def welcome():
     print(separator, "DUNGEON")
@@ -25,9 +40,10 @@ def game_loop():
 def explore_labirynth():
     while True:
         player_input = input("-> ")
+        player_input = sanitize_input(player_input)
         
         if player_input == "help":
-            print("You asked for help, but nobody came")
+            show_help()
         
         elif player_input == "quit" or player_input == "exit":
             print(quit_message)
@@ -36,10 +52,34 @@ def explore_labirynth():
             print(unknown_input)
 
 
+def show_help():
+    print(help_text)
+
+
+def sanitize_input(user_input:str) -> str:
+   return user_input.lower().strip() 
+
+
+
+def get_yn(question:str) -> str:
+    while True:
+        awnser = input(question + " (yes/no) -> ")
+        awnser = sanitize_input(awnser)
+        if awnser not in ["yes", "no", "y", "n"]:
+            print("Please enter yes or no.")
+        else:
+            if awnser == "y":
+                awnser = "yes"
+            elif awnser == "n":
+                awnser = "no"
+        return awnser
+
+
 def play_again():
-    yn = input("Play again? (yes/no) -> ")
+    yn = get_yn("Play again?") 
     if yn == "yes":
         game_loop()
-    else:
+    elif yn == "no":
         print("Until next time, adverturer")
         exit(0)
+
