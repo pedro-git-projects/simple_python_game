@@ -1,9 +1,8 @@
 import game
 
 def main():
-    # print welcome screen
-    game.welcome()
-
+    # play the game until it ends or the player quits
+    game.game_loop()
 
 
 if __name__ == "__main__":
